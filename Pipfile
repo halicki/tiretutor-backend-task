@@ -7,6 +7,7 @@ name = "pypi"
 django = "*"
 petl = "*"
 requests = "*"
+django-bootstrap-v5 = "*"
 
 [dev-packages]
 ipykernel = "*"

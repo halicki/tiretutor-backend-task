@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class Collection(models.Model):
+    added = models.DateTimeField(primary_key=True, auto_now_add=True)
+    file = models.FileField()

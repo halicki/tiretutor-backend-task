@@ -1,0 +1,27 @@
+{% extends 'starwars/base.html' %}
+
+{% load bootstrap5 %}
+
+{% block title %}
+    Collections
+{% endblock %}
+
+{% block content %}
+
+    {% if collections %}
+        <ul>
+            {% for collection in collections %}
+                <li>{{ collection.added }} {{ collection.file }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No collections found.</p>
+    {% endif %}
+
+    <form role="form" method="post">
+        {% csrf_token %}
+{#        {% bootstrap_form form %}#}
+        {% buttons submit='Fetch'%}{% endbuttons %}
+    </form>
+
+{% endblock %}

@@ -9,6 +9,7 @@ petl = "*"
 requests = "*"
 django-bootstrap-v5 = "*"
 django-tables2 = "*"
+django-querystring-tag = "*"
 
 [dev-packages]
 ipykernel = "*"

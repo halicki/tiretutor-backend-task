@@ -4,6 +4,7 @@ import django_tables2 as tables
 class PersonTable(tables.Table):
     class Meta:
         template_name = "django_tables2/bootstrap.html"
+        orderable = False
 
     name = tables.Column()
     height = tables.Column()

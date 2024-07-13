@@ -27,4 +27,11 @@ class CollectionDetailView(DetailView):
         table = PersonTable(self.object.get_dictionaries())
         table.paginate(page=self.request.GET.get("page", 1), per_page=10)
         context["table"] = table
+
+        group = self.request.GET.getlist("group")
+        columns = [
+            {"name": c, "active": c in group} for c in PersonTable.base_columns.keys()
+        ]
+        context["columns"] = columns
+
         return context

@@ -56,8 +56,8 @@ def test_fetch(when):
         "eye_color",
         "birth_year",
         "gender",
-        "homeworld",
         "date",
+        "homeworld",
     )
     assert table[1] == (
         "Luke Skywalker",
@@ -68,8 +68,8 @@ def test_fetch(when):
         "blue",
         "19BBY",
         "yes",
-        "Tatooine",
         "2014-12-09",
+        "Tatooine",
     )
 
     pathlib.Path(file_name).unlink()

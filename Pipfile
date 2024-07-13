@@ -8,9 +8,13 @@ django = "*"
 petl = "*"
 requests = "*"
 django-bootstrap-v5 = "*"
+django-tables2 = "*"
 
 [dev-packages]
 ipykernel = "*"
+pytest-django = "*"
+pytest-mockito = "*"
+responses = "*"
 
 [requires]
 python_version = "3.12"

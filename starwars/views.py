@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.views.generic import ListView
 
 from starwars.models import Collection
-from .fetch import fetch
+from .etl import fetch
 
 
 class CollectionsView(ListView):

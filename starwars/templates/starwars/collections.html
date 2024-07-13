@@ -11,7 +11,11 @@
     {% if collections %}
         <ul>
             {% for collection in collections %}
-                <li>{{ collection.added }} {{ collection.file }}</li>
+                <li>
+                    <a href="{% url 'collection_detail' pk=collection.id %}">
+                        {{ collection.id }}: {{ collection.added|date:"c"  }}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     {% else %}

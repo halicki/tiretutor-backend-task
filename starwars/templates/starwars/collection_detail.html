@@ -1,0 +1,16 @@
+{% extends 'starwars/base.html' %}
+{% load render_table from django_tables2 %}
+
+
+{% load bootstrap5 %}
+
+{% block title %}
+    Collection #{{ collection.id }}
+{% endblock %}
+
+{% block content %}
+    <h3>Details for collection #{{ collection.id }}</h3>
+    <p>Added on: {{ collection.added }}</p>
+    <p>Using file: {{ collection.file }}</p>
+    {%  render_table table %}
+{% endblock %}

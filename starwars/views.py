@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 
+import petl as etl
+
 from .etl import fetch
 from .models import Collection
 from .tables import PersonTable
@@ -24,14 +26,21 @@ class CollectionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        table = PersonTable(self.object.get_dictionaries())
-        table.paginate(page=self.request.GET.get("page", 1), per_page=10)
-        context["table"] = table
 
         group = self.request.GET.getlist("group")
         columns = [
             {"name": c, "active": c in group} for c in PersonTable.base_columns.keys()
         ]
         context["columns"] = columns
+
+        if group:
+            df = self.object.get_data()
+            df_grouped = etl.aggregate(df, key=group, aggregation=len)
+            table = PersonTable(df_grouped.dicts())
+        else:
+            table = PersonTable(self.object.get_data().dicts())
+            table.paginate(page=self.request.GET.get("page", 1), per_page=10)
+
+        context["table"] = table
 
         return context

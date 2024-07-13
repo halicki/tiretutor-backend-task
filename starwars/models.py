@@ -1,6 +1,6 @@
-import csv
-
 from django.db import models
+
+import petl as etl
 
 
 class Collection(models.Model):
@@ -8,6 +8,5 @@ class Collection(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     file = models.FileField()
 
-    def get_dictionaries(self) -> list[dict]:
-        with open(self.file.path) as f:
-            return list(csv.DictReader(f))
+    def get_data(self) -> list[dict]:
+        return etl.fromcsv(self.file)

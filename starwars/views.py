@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic import ListView
 
 from starwars.models import Collection
+from .fetch import fetch
 
 
 class CollectionsView(ListView):
@@ -10,4 +11,6 @@ class CollectionsView(ListView):
     context_object_name = "collections"
 
     def post(self, request):
-        return render(request, "starwars/collections.html")
+        file_name = fetch()
+        Collection(file=file_name).save()
+        return redirect("collections")

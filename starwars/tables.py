@@ -16,3 +16,4 @@ class PersonTable(tables.Table):
     gender = tables.Column()
     date = tables.Column()
     homeworld = tables.Column()
+    count = tables.Column()

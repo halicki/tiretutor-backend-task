@@ -29,18 +29,22 @@ class CollectionDetailView(DetailView):
 
         group = self.request.GET.getlist("group")
         columns = [
-            {"name": c, "active": c in group} for c in PersonTable.base_columns.keys()
+            {"name": c, "active": c in group}
+            for c in PersonTable.base_columns.keys()
+            if c != "count"
         ]
         context["columns"] = columns
 
         if group:
             df = self.object.get_data()
-            df_grouped = etl.aggregate(df, key=group, aggregation=len)
-            table = PersonTable(df_grouped.dicts())
+            df_grouped = etl.aggregate(df, key=group, aggregation=len, field="count")
+            table = PersonTable(
+                df_grouped.dicts(),
+                exclude=[c["name"] for c in columns if not c["active"]],
+            )
         else:
-            table = PersonTable(self.object.get_data().dicts())
+            table = PersonTable(self.object.get_data().dicts(), exclude=["count"])
             table.paginate(page=self.request.GET.get("page", 1), per_page=10)
 
         context["table"] = table
-
         return context

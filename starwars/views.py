@@ -1,8 +1,6 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 
-import petl as etl
-
 from .etl import fetch
 from .models import Collection
 from .tables import PersonTable
@@ -35,15 +33,15 @@ class CollectionDetailView(DetailView):
         ]
         context["columns"] = columns
 
+        data = self.object.get_data()
         if group:
-            df = self.object.get_data()
-            df_grouped = etl.aggregate(df, key=group, aggregation=len, field="count")
+            df_grouped = data.aggregate(key=group, aggregation=len, field="count")
             table = PersonTable(
                 df_grouped.dicts(),
                 exclude=[c["name"] for c in columns if not c["active"]],
             )
         else:
-            table = PersonTable(self.object.get_data().dicts(), exclude=["count"])
+            table = PersonTable(data.dicts(), exclude=["count"])
             table.paginate(page=self.request.GET.get("page", 1), per_page=10)
 
         context["table"] = table

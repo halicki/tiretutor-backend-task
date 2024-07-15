@@ -1,8 +1,8 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 
-from .etl import fetch
 from .models import Collection
+from .service import fetch_collection
 from .tables import PersonTable, PersonTableWithCount
 
 
@@ -12,8 +12,7 @@ class CollectionsView(ListView):
     context_object_name = "collections"
 
     def post(self, request):
-        file_name = fetch()
-        Collection(file=file_name).save()
+        fetch_collection()
         return redirect("collections")
 
 

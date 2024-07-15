@@ -16,4 +16,11 @@ class PersonTable(tables.Table):
     gender = tables.Column()
     date = tables.Column()
     homeworld = tables.Column()
+
+
+class PersonTableWithCount(PersonTable):
+    class Meta:
+        template_name = "django_tables2/bootstrap.html"
+        orderable = False
+
     count = tables.Column()

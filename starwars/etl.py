@@ -1,25 +1,31 @@
+from typing import Generator
 from uuid import uuid4
 from dateutil.parser import parse
 
 import petl as etl
 import requests
 
+import httpx
+import asyncio
 
-def consume_resource(resource: str) -> etl.Table:
+
+def consume_resource(resource: str) -> Generator[etl.Table, None, None]:
     """Consume a resource from the Star Wars API and return a table."""
     next_page = f"https://swapi.dev/api/{resource}/"
+    results = []
     while next_page:
-        r = requests.get(next_page)
-        data = r.json()
+        data = requests.get(next_page).json()
         next_page = data["next"]
-        yield etl.fromdicts(data["results"])
+        results.extend(data["results"])
+
+    return etl.fromdicts(results)
 
 
 def fetch() -> str:
     """Fetch Star Wars data and save it to a CSV file."""
 
     # Download and filter people
-    people = etl.cat(*consume_resource("people"))
+    people = consume_resource("people")
     people_with_date = etl.addfield(
         people, "date", lambda row: parse(row["created"]).date()
     )
@@ -38,7 +44,7 @@ def fetch() -> str:
     )
 
     # Download and filter planets
-    planets = etl.cat(*consume_resource("planets"))
+    planets = consume_resource("planets")
     planets_selected = etl.cut(planets, "name", "url")
     planets_selected_renamed = etl.rename(
         planets_selected, {"name": "planet_name", "url": "planet_url"}
